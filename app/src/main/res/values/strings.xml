@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">LocationServices</string>
+
+    <string name="txtUserLocationLabel">User Location:</string>
+    <string name="txtUserLocationValue">{Latitude, Longitude}</string>
+
+    <string name="btnGetLastKnownLocation">Get Last Known Location</string>
+
+</resources>
