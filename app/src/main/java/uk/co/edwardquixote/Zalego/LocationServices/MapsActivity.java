@@ -41,32 +41,36 @@ public class MapsActivity extends AppCompatActivity {
 
 
         final SupportMapFragment mapFragment = (SupportMapFragment) this.getSupportFragmentManager().findFragmentById(R.id.fragmentMaps);
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
+        if (mapFragment != null) {
 
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
 
-                LatLng latlngNairobi = new LatLng(-1.28333, 36.81667);      //  Latitude & Longitude of Nairobi City
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
 
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latlngNairobi);
-                markerOptions.title("Nairobi City");
+                    LatLng latlngNairobi = new LatLng(-1.28333, 36.81667);      //  Latitude & Longitude of Nairobi City
 
-                googleMap.addMarker(markerOptions);
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latlngNairobi);
+                    markerOptions.title("Nairobi City");
+
+                    googleMap.addMarker(markerOptions);
 
 
-                LatLng latlngUserLocation = new LatLng(dLatitude, dLongitude);
+                    LatLng latlngUserLocation = new LatLng(dLatitude, dLongitude);
 
-                MarkerOptions userMarkerOptions = new MarkerOptions();
-                userMarkerOptions.title("User Location");
-                userMarkerOptions.position(latlngUserLocation);
+                    MarkerOptions userMarkerOptions = new MarkerOptions();
+                    userMarkerOptions.title("User Location");
+                    userMarkerOptions.position(latlngUserLocation);
 
-                googleMap.addMarker(userMarkerOptions);
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latlngUserLocation));
+                    googleMap.addMarker(userMarkerOptions);
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(latlngUserLocation));
 
-            }
+                }
 
-        });
+            });
+
+        }
 
     }
 
