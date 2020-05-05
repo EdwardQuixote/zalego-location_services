@@ -5,5 +5,6 @@
     <string name="txtUserLocationValue">{Latitude, Longitude}</string>
 
     <string name="btnGetLastKnownLocation">Get Last Known Location</string>
+    <string name="btnShowLocationOnMaps">Show Location on Maps</string>
 
 </resources>

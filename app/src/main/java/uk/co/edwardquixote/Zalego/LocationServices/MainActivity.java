@@ -1,11 +1,5 @@
 package uk.co.edwardquixote.Zalego.LocationServices;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -33,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient locationProviderClient;
     private LocationRequest locationRequest;
+
+    private double dLatitude;
+    private double dLongitude;
 
 
     @Override
@@ -60,6 +62,34 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 checkForAccessLocationPermissions();
+                checkForWriteExternalStoragePermissions();
+
+            }
+
+        });
+
+        Button btnStartMaps = (Button) this.findViewById(R.id.btnStartMaps);
+        btnStartMaps.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if ((dLatitude <= 0.000000) && (dLongitude <= 0.000000)) {
+
+                    Toast.makeText(MainActivity.this, "Can't start Maps until we get your location!", Toast.LENGTH_LONG).show();
+
+                } else {
+
+                    Bundle bundleLocation = new Bundle();
+                    bundleLocation.putDouble("KEY_LATITUDE", dLatitude);
+                    bundleLocation.putDouble("KEY_LONGITUDE", dLongitude);
+
+                    Intent inStartMaps = new Intent(MainActivity.this, MapsActivity.class);
+                    inStartMaps.putExtra("KEY_MAPS_EXTRA", bundleLocation);
+                    startActivity(inStartMaps);
+
+                }
+
 
             }
 
@@ -126,6 +156,28 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private boolean checkForWriteExternalStoragePermissions() {
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                Toast.makeText(MainActivity.this, "We need this permission, to access your location.", Toast.LENGTH_LONG).show();
+
+                return false;
+            } else {
+
+                ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 20202);
+
+                return true;
+            }
+
+        } else {
+            return true;
+        }
+
+    }
+
     private void createLocationRequest() {
 
         locationRequest = LocationRequest.create();
@@ -150,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (userCurrentLocation != null) {
 
-                    double dLatitude = userCurrentLocation.getLatitude();
-                    double dLongitude = userCurrentLocation.getLongitude();
+                    dLatitude = userCurrentLocation.getLatitude();
+                    dLongitude = userCurrentLocation.getLongitude();
 
                     String sLocation = "[" + dLatitude + ", " + dLongitude + "]";
                     txtUserLocationValues.setText(sLocation);
@@ -171,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (requestCode) {
 
-            case 10101:
+            case 10101:     //  Access Fine Location Permission Request Code
 
                 if ((grantResults.length > 0)) {
 
@@ -186,6 +238,12 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }
+
+                break;
+
+            case 20202:     //  Write External Storage Permission Request Code
+
+                Toast.makeText(MainActivity.this, "Write External Storage Permission Granted.", Toast.LENGTH_LONG).show();
 
                 break;
 
