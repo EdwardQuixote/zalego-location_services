@@ -17,8 +17,6 @@ public class MapsActivity extends AppCompatActivity {
     private double dLatitude;
     private double dLongitude;
 
-    private GoogleMap googleMap;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +45,6 @@ public class MapsActivity extends AppCompatActivity {
 
             @Override
             public void onMapReady(GoogleMap googleMap) {
-
-                googleMap = googleMap;
 
                 LatLng latlngNairobi = new LatLng(-1.28333, 36.81667);      //  Latitude & Longitude of Nairobi City
 
